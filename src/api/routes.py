@@ -83,4 +83,12 @@ def profile():
     user_exist = db.session.execute(db.select(User).filter_by(email=email)).one_or_none()
     return jsonify(user_exist[0].serialize()),200
 
- 
+@api.route('/users/tasks', methods=['GET', 'POST'])
+@jwt_required()
+def tasks():
+    return {"msg":"under construction"}
+
+@api.route('/users/tasks/<id>', methods=['PUT', 'DELETE'])
+@jwt_required()
+def update_task():
+    return {"msg":"under construction"}
