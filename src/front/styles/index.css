@@ -1,0 +1,11 @@
+/* 
+    General Styles used on every website (Don't Repeat Yourself)
+*/
+
+.fail {
+color:red;
+}
+
+.instruc {
+    color: darkgray;
+}
