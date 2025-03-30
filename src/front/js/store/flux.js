@@ -2,6 +2,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			whereiam:"Home",
+			currentPage:0,
 			message: null,
 			demo: [
 				{

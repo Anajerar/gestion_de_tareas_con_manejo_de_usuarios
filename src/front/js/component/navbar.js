@@ -23,7 +23,7 @@ export const Navbar = () => {
 			setButtonRoute('/login');
 			setButtonFunction('Ingresar')
 		}
-		if (store.whereiam=='Private') {
+		if (store.whereiam=='Tasklist') {
 			setButtonRoute('/');
 			setButtonFunction('Logout')
 		}
@@ -46,7 +46,7 @@ export const Navbar = () => {
 			else if (store.whereiam=="Signup") {
 				store.whereiam="Login"
 			} 
-			else if (store.whereiam=="Private"){
+			else if (store.whereiam=="Tasklist"){
 				store.whereiam="Login"
 				localStorage.removeItem('token')
 				navigate('/login')

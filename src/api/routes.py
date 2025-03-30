@@ -4,11 +4,13 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_
-from api.models import db, User
+from api.models import db, User, Task
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+
+import math
 
 api = Blueprint('api', __name__)
 
@@ -83,10 +85,26 @@ def profile():
     user_exist = db.session.execute(db.select(User).filter_by(email=email)).one_or_none()
     return jsonify(user_exist[0].serialize()),200
 
-@api.route('/users/tasks', methods=['GET', 'POST'])
+@api.route('/users/tasks', methods=['GET'])
 @jwt_required()
 def tasks():
-    return {"msg":"under construction"}
+    email=get_jwt_identity()
+    logged_user = db.session.execute(db.select(User).filter_by(email=email)).one_or_none()
+    user_id = logged_user[0].id
+    print("user id:",user_id," user name:",logged_user[0].user_name)
+    total_tasks = db.session.query(Task).filter(Task.user_id==user_id).count()
+    pages=math.ceil(total_tasks/5)
+    user_tasks = db.session.query(Task).filter(Task.user_id==user_id).limit(5).offset(0).all()
+    task_list=[]
+    for row in user_tasks:
+        task_list.append({'taskId':row.id,'taskTitle':row.title,'taskDescription':row.description,
+                          'taskCompleted':row.completed} ) 
+    return jsonify ({'msg':'ok','userName':logged_user[0].user_name,'totalPages':pages,'userTasks':task_list})
+   
+@api.route('/users/addtask', methods=['POST'])
+@jwt_required()
+def add_task():
+    return {'msg':'under construction'}
 
 @api.route('/users/tasks/<id>', methods=['PUT', 'DELETE'])
 @jwt_required()

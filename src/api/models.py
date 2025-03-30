@@ -12,6 +12,8 @@ class User(db.Model):
     password_hash = db.Column(db.String(300), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=True)
 
+    tasks = db.relationship("Task", back_populates="user")
+
     def __repr__(self):
         return f'<User {self.email}>'
 
@@ -23,12 +25,23 @@ class User(db.Model):
             # do not serialize the password, its a security breach
         }
     
+    def tasks_serialized(self):
+        tasks_serialize=[]
+        for task_list in self.tasks:
+            tasks_serialize.append({'taskId':task_list.id, 'taskTitle':task_list.title,
+                                    'taskDescription':task_list.description,'taskCompleted':task_list.completed
+                                    })
+        return {'userId':self.id, 'userName':self.user_name,
+                         'tasks':tasks_serialize}
+    
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), unique=False, nullable=False)
     description = db.Column(db.String(300), unique=False, nullable=False)
     completed = db.Column(db.Boolean, unique=False, nullable=False)
-    user_id =  db.Column(db.Integer, ForeignKey(User.id), unique = True, nullable = False)
+    user_id =  db.Column(db.Integer, ForeignKey(User.id), unique = False, nullable = False)
+
+    user = db.relationship("User", back_populates="tasks")
 
     def __repr__(self):
         return f'<User {self.title}>'

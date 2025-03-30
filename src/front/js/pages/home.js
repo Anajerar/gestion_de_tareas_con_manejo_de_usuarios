@@ -23,15 +23,17 @@ export const Home = () => {
 				store.whereiam='Login';
 				navigate('/login')
 			} else {
-					store.whereiam='Private';
-					navigate('/private')}
+					store.whereiam='Tasklist';
+					navigate('/tasklist')}
 				}
 		store.whereiam='Home';
 		const token=localStorage.getItem('token',token);
 		if (!token) {
-				store.whereiam='Login';
-				navigate('/login')
-		}
+					console.log('No token')
+					store.whereiam='Login';
+					navigate('/login')
+					}
+		console.log('backend:',backend)
 		fetchData(token);
 		return
 

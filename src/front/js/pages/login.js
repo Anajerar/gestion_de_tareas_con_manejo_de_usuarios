@@ -56,10 +56,9 @@ export const Login = () => {
                 } else {
                     setValidUser(true)
                     setSuccessLogin(true)
-                    store.whereiam='Private';
-                    setTimeout(() => navigate('/private'), 2000);
+                    store.whereiam='Tasklist';
+                    setTimeout(() => navigate('/tasklist'), 2000);
                 }
-            //store.whereiam='Private';
             return
             }    
         
