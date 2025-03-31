@@ -10,6 +10,8 @@ import { Signup } from "./pages/signup";
 import { Login } from "./pages/login";
 import { Private } from "./pages/private";
 import { Tasklist } from "./pages/tasklist";
+import { AddTaskModal } from "./pages/addTaskModal";
+import { ModifyTask } from "./pages/modifyTask";
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
@@ -33,6 +35,8 @@ const Layout = () => {
                         <Route element={<Login />} path="/login" />
                         <Route element={<Private />} path="/private" />
                         <Route element={<Tasklist />} path="/tasklist" />
+                        <Route element={<AddTaskModal />} path="/addtaskmodal" />
+                        <Route element={<ModifyTask />} path="/modifytask/:taskid" />
                         <Route element={<Demo />} path="/demo" />
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<h1>Not found!</h1>} />

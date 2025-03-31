@@ -85,28 +85,93 @@ def profile():
     user_exist = db.session.execute(db.select(User).filter_by(email=email)).one_or_none()
     return jsonify(user_exist[0].serialize()),200
 
-@api.route('/users/tasks', methods=['GET'])
+@api.route('/users/tasks/<string:page>', methods=['GET'])
 @jwt_required()
-def tasks():
+def tasks(page):     # Query task list for the user in pages of 5 tasks each
     email=get_jwt_identity()
+
+    #Get user id
     logged_user = db.session.execute(db.select(User).filter_by(email=email)).one_or_none()
     user_id = logged_user[0].id
     print("user id:",user_id," user name:",logged_user[0].user_name)
+
+    # Calculating the total number of pages w/5 records each
     total_tasks = db.session.query(Task).filter(Task.user_id==user_id).count()
     pages=math.ceil(total_tasks/5)
-    user_tasks = db.session.query(Task).filter(Task.user_id==user_id).limit(5).offset(0).all()
+
+    # calculating the page query offset
+    if page=="first":
+        offset=0
+    elif page=="last":
+        offset=(pages-1)*5
+    else:
+        try:
+            offset=(int(page)-1)*5
+        except:
+            return {'msg':'incorrect page number'},404
+
+    print('offset:',offset)    
+    # getting the 5 task list for the page
+    user_tasks = db.session.query(Task).filter(Task.user_id==user_id).limit(5).offset(offset).all()
     task_list=[]
     for row in user_tasks:
         task_list.append({'taskId':row.id,'taskTitle':row.title,'taskDescription':row.description,
                           'taskCompleted':row.completed} ) 
     return jsonify ({'msg':'ok','userName':logged_user[0].user_name,'totalPages':pages,'userTasks':task_list})
-   
+
+
+
 @api.route('/users/addtask', methods=['POST'])
 @jwt_required()
 def add_task():
-    return {'msg':'under construction'}
+    email=get_jwt_identity()
+    data = request.json
+    title=data.get('task')
+    description = data.get('description')
+    completed = data.get('completed')
+    #get user id
+    try:
+        logged_user = db.session.execute(db.select(User).filter_by(email=email)).one_or_none()
+        user_id = logged_user[0].id
+        db.session.close()
+    except Exception as error:
+        print('error with database', error)
+        return {'msg':'database error'},500
 
-@api.route('/users/tasks/<id>', methods=['PUT', 'DELETE'])
+    print('task:',title,' description:',description,' completed:',completed, ' user id:',user_id)
+    new_task = Task(
+            title = title,
+            description=description,
+            completed=completed,
+            user_id=user_id     
+        )
+    
+    try:
+            db.session.add(new_task)
+            db.session.commit()
+    except Exception as error:
+            db.session.rollback()
+            return jsonify({"message": "Error saving user to database"}), 500
+
+    return {'msg':'task saved'}
+
+
+
+@api.route('/users/task/<int:id>', methods=['GET','PUT', 'DELETE'])
 @jwt_required()
-def update_task():
+def update_task(id):
+    email=get_jwt_identity()
+
+    #Get user id
+    logged_user = db.session.execute(db.select(User).filter_by(email=email)).one_or_none()
+    user_id = logged_user[0].id
+
+    if request.method=='GET':
+        user_task = db.session.execute(db.select(Task).filter_by(user_id=user_id, id=id)).one_or_none()
+        task=user_task[0].serialize()
+        print('this the user task:', task)
+        return jsonify(task),200
+    
+    if request.method=='PUT':
+        return {"msg":"PUT under construction"}
     return {"msg":"under construction"}

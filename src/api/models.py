@@ -50,7 +50,7 @@ class Task(db.Model):
         return {
             "id": self.id,
             "title": self.title,
-            "description":self.desciption,
+            "description":self.description,
             "user_id": self.user_id,
             "completed": self.completed
         }
