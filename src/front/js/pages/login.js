@@ -86,7 +86,7 @@ export const Login = () => {
                 <button type="submit" className="btn btn-primary">Enviar</button>
             </form>
             {validUser ? null : <p>Email o password invalido, favor de verificar</p>}
-            {successLogin ? <p>Redirigiendo a pagina privada</p>: null}
+            {successLogin ? <p>Redirigiendo Lista de Tareas</p>: null}
             
         </div>
     </div>

@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Navigate,useNavigate } from "react-router-dom";
 import { Navbar } from "../component/navbar";
 import { Context } from "../store/appContext";
+import { Link, useParams } from "react-router-dom";
 
 const token = localStorage.getItem('token')
 const backend=process.env.BACKEND_URL
@@ -14,13 +15,11 @@ let tittleToAdd='';
 let descriptionToAdd='';
 
 const titleChange = (e) =>{
-    console.log(e.target.value)
     tittleToAdd=e.target.value
     return
 }
 
 const descriptionChange = (e) =>{
-    console.log(e.target.value)
     descriptionToAdd=e.target.value
     return
 }
@@ -43,7 +42,7 @@ const addTask = () => {
     .then( userResponse =>{
                             console.log(userResponse)
                             setShow(false)
-                            store.currentPage=store.numberOfPages
+                            store.currentPage='1'
                             navigate('/tasklist')
                             return
 
@@ -53,13 +52,13 @@ const addTask = () => {
 }
 
     return(
-                    <div className="modal fade" id="addTask" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div className="jumbotron" id="addTask" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <Navbar />
                         <div className="modal-dialog">
                             <div className="modal-content">
-                            <div className="modal-header">
-                                <h1 className="modal-title fs-5" id="staticBackdropLabel">Agregar Tarea</h1>
-                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
+                                <div className="modal-header">
+                                    <h1 className="modal-title fs-5" id="staticBackdropLabel">Agregar Tarea</h1>
+                                </div>
                             <div className="modal-body">
                                 <label htmlFor="taxkTitle" className="form-label">Titulo</label>
                                 <input type="text" id="taskTitle" className="form-control" onChange={titleChange}/>
@@ -73,7 +72,9 @@ const addTask = () => {
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Descartar</button>
+                                <Link to="/tasklist">
+                                    <span type="button" className="btn btn-secondary" data-bs-dismiss="modal">Descartar</span>
+                                </Link>
                                 <button type="button" className="btn btn-primary" onClick={addTask} data-bs-dismiss="modal">Agregar tarea</button>
                             </div>
                             </div>

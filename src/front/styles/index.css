@@ -9,3 +9,25 @@ color:red;
 .instruc {
     color: darkgray;
 }
+
+.task-list {
+    background-color: rgba(255, 208, 0, 0.535);
+    font-style: italic;
+    border-radius: 10px;
+    width: 90%;
+    margin-right: 5%;
+    margin-left: 5%;
+}
+
+.table-row {
+    border-bottom: 2px solid lightseagreen;
+}
+
+.table-head {
+    border-bottom: 3px solid rgb(0, 140, 255);
+}
+
+.page-button {
+    background-color: rgb(241, 177, 100);
+    border-radius: 8px;
+}

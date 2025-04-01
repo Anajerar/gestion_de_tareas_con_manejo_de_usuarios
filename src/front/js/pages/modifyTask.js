@@ -10,14 +10,11 @@ const backend=process.env.BACKEND_URL
 
 
 export const ModifyTask = () => {
+    const { store, actions } = useContext(Context);
     const [task,setTask]=useState({})
-    //const [completeCheck, setCompletedCheck]=useState(false)
     const params = useParams();
     const navigate = useNavigate()
     const token = localStorage.getItem('token')
-    let tittle='';
-    let description='';
-    let completed=false;
 
     const fetchSingleTask = (token, taskId) =>{
         fetch(`${backend}api/users/task/${taskId}`,{method:'GET',
@@ -30,8 +27,11 @@ export const ModifyTask = () => {
                             return response.json()
                             })
         .then( userResponse =>{
-                console.log(userResponse)
-                setTask(userResponse)
+                console.log(userResponse);
+                const title=userResponse.title;
+                const description=userResponse.description;
+                console.log('after fecth, title:',title)
+                setTask(userResponse);
                 
                 return
 
@@ -50,13 +50,15 @@ export const ModifyTask = () => {
 
     const titleChange = (e) =>{
         console.log(e.target.value)
-        tittle=e.target.value
+        const title=e.target.value
+        setTask(prevTask => ({...prevTask,title:title}))
         return
     }
 
     const descriptionChange = (e) =>{
         console.log(e.target.value)
-        description=e.target.value
+        const description=e.target.value
+        setTask(prevTask => ({...prevTask,description:description}))
         return
     }
 
@@ -68,9 +70,12 @@ export const ModifyTask = () => {
 
     const updateTask = () => {
         const taskId=task.id
+        const bodyData = JSON.stringify({"id":task.id,"title":task.title,"description":task.description,"completed":task.completed})
+        //console.log("Body data for API:",bodyData )
         fetch(`${backend}api/users/task/${taskId}`,{method:'PUT',
-            headers : {"Content-Type": "application/json",
-            Authorization: `Bearer ${token}`}    })
+                                                    headers : {"Content-Type": "application/json",
+                                                    Authorization: `Bearer ${token}`}, 
+                                                    body:bodyData   })
         .then(response => {
                             if (!response.ok) {
                             throw new Error(response.statusText+":"+response.status);
@@ -79,6 +84,8 @@ export const ModifyTask = () => {
                             })
         .then( userResponse =>{
                                 console.log(userResponse)
+                                //store.currentPage=store.numberOfPages
+                                navigate("/tasklist")
                                 return
 
         })
@@ -91,7 +98,7 @@ export const ModifyTask = () => {
             <div className="jumbotron">
                 <Navbar />
                 <div className="d-flex justify-content-center">
-                    <h1>Actualizacion de tarea: {params.taskid}</h1>
+                    <h1>Actualizacion de tarea</h1>
                 </div>
                 <div className="mx-5">
                                 <label htmlFor="taskTitle" className="form-label">Titulo de la Tarea</label>

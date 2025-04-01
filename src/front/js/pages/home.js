@@ -10,6 +10,29 @@ const backend=process.env.BACKEND_URL
 export const Home = () => {
 	const { store, actions } = useContext(Context);
 	const navigate = useNavigate()
+	const token=localStorage.getItem('token',token);
+
+	const identify = () => {
+		fetch(`${backend}api/users/me`,{headers : {"Content-Type": "application/json",
+										Authorization: `Bearer ${token}`,}})
+		.then(response => {
+				if (!response.ok) {
+					throw new Error(response.statusText+":"+response.status);
+					}
+				return response.json()
+				})
+		.then( userResponse =>{
+								console.log(userResponse)
+								store.whereiam='Tasklist';
+								navigate('/tasklist')
+								return
+
+			})
+		.catch(error => {console.log('An error occurred:catched:',error.message);
+						localStorage.removeItem('token');
+						navigate('/login')
+		})
+	}
 	
 	useEffect(()=>{
 		const fetchData = async(token) => {
@@ -27,14 +50,14 @@ export const Home = () => {
 					navigate('/tasklist')}
 				}
 		store.whereiam='Home';
-		const token=localStorage.getItem('token',token);
+		
 		if (!token) {
 					console.log('No token')
 					store.whereiam='Login';
 					navigate('/login')
 					}
-		console.log('backend:',backend)
-		fetchData(token);
+		//fetchData(token);
+		identify();
 		return
 
 	},[])
@@ -42,19 +65,10 @@ export const Home = () => {
 	return (
 		<div className="text-center mt-5">
 			<Navbar />
-			<h1>Hello Rigo!!</h1>
-			<p>
-				<img src={rigoImageUrl} />
-			</p>
+			<h1>Gestor de Tareas</h1>
 			<div className="alert alert-info">
 				{store.message || "Loading message from the backend (make sure your python backend is running)..."}
 			</div>
-			<p>
-				This boilerplate comes with lots of documentation:{" "}
-				<a href="https://start.4geeksacademy.com/starters/react-flask">
-					Read documentation
-				</a>
-			</p>
 		</div>
 	);
 };

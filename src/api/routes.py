@@ -3,7 +3,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import or_
+from sqlalchemy import or_, desc
 from api.models import db, User, Task
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
@@ -100,7 +100,7 @@ def tasks(page):     # Query task list for the user in pages of 5 tasks each
     pages=math.ceil(total_tasks/5)
 
     # calculating the page query offset
-    if page=="first":
+    if page=="0":
         offset=0
     elif page=="last":
         offset=(pages-1)*5
@@ -112,7 +112,7 @@ def tasks(page):     # Query task list for the user in pages of 5 tasks each
 
     print('offset:',offset)    
     # getting the 5 task list for the page
-    user_tasks = db.session.query(Task).filter(Task.user_id==user_id).limit(5).offset(offset).all()
+    user_tasks = db.session.query(Task).filter(Task.user_id==user_id).order_by(desc(Task.id)).limit(5).offset(offset).all()
     task_list=[]
     for row in user_tasks:
         task_list.append({'taskId':row.id,'taskTitle':row.title,'taskDescription':row.description,
@@ -163,8 +163,11 @@ def update_task(id):
     email=get_jwt_identity()
 
     #Get user id
-    logged_user = db.session.execute(db.select(User).filter_by(email=email)).one_or_none()
-    user_id = logged_user[0].id
+    try:
+        logged_user = db.session.execute(db.select(User).filter_by(email=email)).one_or_none()
+        user_id = logged_user[0].id
+    except:
+        return jsonify({'msg':'Database access error'}),500
 
     if request.method=='GET':
         user_task = db.session.execute(db.select(Task).filter_by(user_id=user_id, id=id)).one_or_none()
@@ -173,5 +176,33 @@ def update_task(id):
         return jsonify(task),200
     
     if request.method=='PUT':
-        return {"msg":"PUT under construction"}
+        data=request.json
+        title=data.get('title')
+        description=data.get('description')
+        completed=data.get('completed')
+        print("task id:",id," user id:",user_id," title:",title," description:",description," completed:",completed)
+        task_to_update = db.session.query(Task).filter_by(id=id,user_id=user_id).first()
+        if task_to_update:
+            task_to_update.title=title
+            task_to_update.description=description
+            task_to_update.completed=completed
+            db.session.commit()
+            db.session.close()
+            return {"msg":"task updated"},200
+        else:
+            db.session.close()
+            return jsonify({'msg':'task and related user not found'}),404
+        
+    if request.method=='DELETE':
+        task_to_update = db.session.query(Task).filter_by(id=id,user_id=user_id).first()
+        if task_to_update:
+            print(task_to_update.description)
+            db.session.delete(task_to_update)
+            db.session.commit()
+            db.session.close()
+            return jsonify({"msg":"task deleted"}),200
+        else:
+            db.session.close()
+            return jsonify({"msg":"task and related user not found"}),404
+        
     return {"msg":"under construction"}

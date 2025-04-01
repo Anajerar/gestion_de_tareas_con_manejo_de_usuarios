@@ -3,7 +3,7 @@ import React, { Component } from "react";
 export const Footer = () => (
 	<footer className="footer mt-auto py-3 text-center">
 		<p>
-			Authentication system with Python, flask and React by Aurelio Najera  <a href="http://www.4geeksacademy.com">4Geeks Academy</a>
+			Gestor de Tareas by <a href="https://github.com/Anajerar">Aurelio Najera</a>
 		</p>
 	</footer>
 );
