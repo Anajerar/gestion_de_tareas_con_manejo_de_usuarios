@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Navigate,useNavigate } from "react-router-dom";
 import { Navbar } from "../component/navbar";
-//import { AddTaskModal } from "./addTaskModal";
 import { Context } from "../store/appContext";
 import { Link, useParams } from "react-router-dom";
 import '../../styles/index.css';
@@ -29,13 +28,11 @@ export const Tasklist = () => {
                             return response.json()
                             })
         .then( userResponse =>{
-                            console.log(userResponse)
                             setUserName(userResponse.userName);
                             setTasks(userResponse.userTasks)
                             store.numberOfPages=userResponse.totalPages
                             setPage(store.currentPage)
                             return
-
                             })
         .catch ( error => {console.log('An error occurred:catched:',error.message)})
 
@@ -65,16 +62,12 @@ export const Tasklist = () => {
         if (store.currentPage=='1'){return}
         else if (store.currentPage=='last'){store.currentPage=store.numberOfPages-1}
         else { store.currentPage-- }
-        //if (store.currentPage=='1') { store.currentPage='first'}
         userTasks(token)
     }
 
-    const pageIndex = (page) => {
-        if (page!='first' || page!='last') return <span>{store.currentPage}</span>
-    }
 
     const taskToDelete = () => {
-        console.log('To delete task:',deleteTask.description," id:",deleteTask.id)
+        //console.log('To delete task:',deleteTask.description," id:",deleteTask.id)
         fetch(`${backend}api/users/task/${deleteTask.id}`,{method:'DELETE',
                                         headers : {"Content-Type": "application/json",
                                         Authorization: `Bearer ${token}`}
@@ -86,7 +79,6 @@ export const Tasklist = () => {
                             return response.json()
                             })
         .then( userResponse =>{
-                            console.log(userResponse);
                             setDeleteTask({id:null,description:''});
                             userTasks(token);
                             return
@@ -138,13 +130,13 @@ export const Tasklist = () => {
                         {page==store.numberOfPages ? <p style={{width:'160px'}}></p>:
                         <button className="button page-button" onClick={nextPage}> Página Siguiente {' >>'}</button>}
                     </div>
-                    <div type="button" className="btn btn-subtle mt-3" data-bs-toggle="modal" data-bs-target="#addTask">
+                    <div type="button" className="btn btn-subtle mt-3">
                         <Link to={"/addtask"}>
                             <span className="btn page-button mt-3">+ Agregar una Tarea</span>
                         </Link>
                     </div>
 
-                    <div className="modal fade" id="deleteTask" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div className="modal fade" id="deleteTask" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" >
                         <div className="modal-dialog">
                             <div className="modal-content">
                                 <div className="modal-header">

@@ -27,11 +27,8 @@ export const ModifyTask = () => {
                             return response.json()
                             })
         .then( userResponse =>{
-                console.log(userResponse);
-                setTask(userResponse);
-                
-                return
-
+                                setTask(userResponse);
+                                return
                             })
         .catch ( error => {console.log('Modify task: An error occurred:',error.message)})
         
@@ -106,10 +103,10 @@ export const ModifyTask = () => {
                             <div id="titleHelp" className="form-text">
                                     Descripcion: 300 caracteres
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" checked={task.completed}
+                            <div className="form-check">
+                                <input className="form-check-input" type="checkbox" value="" id="defaultCheck1" checked={task.completed}
                                         onClick={checkCompletion}/>
-                                <label class="form-check-label" for="defaultCheck1">Completed</label>
+                                <label className="form-check-label" htmlFor="defaultCheck1">Completed</label>
                             </div>
                         </div>
                         <div className="d-flex justify-content-center">

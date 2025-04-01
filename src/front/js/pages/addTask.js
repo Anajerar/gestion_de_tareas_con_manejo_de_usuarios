@@ -26,8 +26,8 @@ const descriptionChange = (e) =>{
 
 const addTask = () => {
     const completed = false;
-    //console.log('task:',tittleToAdd,' description:',descriptionToAdd, ' completed:', completed, " token:", token)
-    const bodyData = JSON.stringify({'task':tittleToAdd,'description':descriptionToAdd, 'completed': completed})
+    const token=localStorage.getItem('token')
+    const bodyData = JSON.stringify({'task':tittleToAdd,'description':descriptionToAdd, 'completed': completed});
     fetch(`${backend}api/users/addtask`,{method:'POST',
                                         headers : {"Content-Type": "application/json",
                                         Authorization: `Bearer ${token}`},
@@ -57,7 +57,7 @@ const addTask = () => {
                         <div className="row add-task-container">
                             <div>
                                 <div>
-                                    <h3 className="m-3" id="staticBackdropLabel">Agregar Tarea</h3>
+                                    <h3 className="m-3">Agregar Tarea</h3>
                                 </div>
                                 <div className="row form-body py-3">
                                     <div className="row">
@@ -77,9 +77,9 @@ const addTask = () => {
                                 </div>
                             <div className="d-flex justify-content-center">
                                 <Link to="/tasklist">
-                                    <span type="button" className="btn btn-secondary m-3" data-bs-dismiss="modal">Descartar</span>
+                                    <span type="button" className="btn btn-secondary m-3" >Descartar</span>
                                 </Link>
-                                <button type="button" className="btn btn-primary m-3" onClick={addTask} data-bs-dismiss="modal">Agregar tarea</button>
+                                <button type="button" className="btn btn-primary m-3" onClick={addTask} >Agregar tarea</button>
                             </div>
                             </div>
                         </div>
