@@ -28,9 +28,6 @@ export const ModifyTask = () => {
                             })
         .then( userResponse =>{
                 console.log(userResponse);
-                const title=userResponse.title;
-                const description=userResponse.description;
-                console.log('after fecth, title:',title)
                 setTask(userResponse);
                 
                 return
@@ -71,7 +68,7 @@ export const ModifyTask = () => {
     const updateTask = () => {
         const taskId=task.id
         const bodyData = JSON.stringify({"id":task.id,"title":task.title,"description":task.description,"completed":task.completed})
-        //console.log("Body data for API:",bodyData )
+
         fetch(`${backend}api/users/task/${taskId}`,{method:'PUT',
                                                     headers : {"Content-Type": "application/json",
                                                     Authorization: `Bearer ${token}`}, 
@@ -82,13 +79,9 @@ export const ModifyTask = () => {
                             }
                             return response.json()
                             })
-        .then( userResponse =>{
-                                console.log(userResponse)
-                                //store.currentPage=store.numberOfPages
-                                navigate("/tasklist")
-                                return
+        .then( userResponse =>{navigate("/tasklist")
+                                return})
 
-        })
         .catch ( error => {console.log('Modify task: An error occurred:',error.message)})
 
         return
@@ -97,36 +90,38 @@ export const ModifyTask = () => {
     return(
             <div className="jumbotron">
                 <Navbar />
-                <div className="d-flex justify-content-center">
-                    <h1>Actualizacion de tarea</h1>
-                </div>
-                <div className="mx-5">
-                                <label htmlFor="taskTitle" className="form-label">Titulo de la Tarea</label>
-                                <input type="text" id="taskTitle" className="form-control" onChange={titleChange} defaultValue={task.title}/>
-                                <div id="titleHelp" className="form-text">
+                <div className="row add-task-container">
+                    <div>
+                        <div className="d-flex justify-content-center">
+                            <h1>Actualizacion de tarea</h1>
+                        </div>
+                        <div className="px-5 py-3 row form-body">
+                            <label htmlFor="taskTitle" className="form-label">Titulo de la Tarea</label>
+                            <input type="text" id="taskTitle" className="form-control" onChange={titleChange} defaultValue={task.title}/>
+                            <div id="titleHelp" className="form-text">
                                     Titulo de la Tarea no mayor a 100 caracteres
-                                </div>
-                                <label htmlFor="taskDescription" className="form-label">Descripcion</label>
-                                <textarea id="taskDescription" className="form-control" onChange={descriptionChange} defaultValue={task.description}/>
-                                <div id="titleHelp" className="form-text">
+                            </div>
+                            <label htmlFor="taskDescription" className="form-label">Descripcion</label>
+                            <textarea id="taskDescription" className="form-control" onChange={descriptionChange} defaultValue={task.description}/>
+                            <div id="titleHelp" className="form-text">
                                     Descripcion: 300 caracteres
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" checked={task.completed}
-                                    onClick={checkCompletion}/>
-                                    <label class="form-check-label" for="defaultCheck1">
-                                        Completed
-                                    </label>
-                                </div>
                             </div>
-                            <div className="d-flex justify-content-center">
-                                <Link to="/">
-                                    <span className="btn btn-primary btn-lg m-3" href="#" role="button">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" checked={task.completed}
+                                        onClick={checkCompletion}/>
+                                <label class="form-check-label" for="defaultCheck1">Completed</label>
+                            </div>
+                        </div>
+                        <div className="d-flex justify-content-center">
+                            <Link to="/">
+                                <span className="btn btn-primary btn-lg m-3" href="#" role="button">
                                         Descartar cambios
-                                    </span>
-                                </Link>
-                                <button type="button" className="btn btn-primary btn-lg m-3" onClick={updateTask} >Actualizar Cambios</button>
-                            </div>
+                                </span>
+                            </Link>
+                            <button type="button" className="btn btn-primary btn-lg m-3" onClick={updateTask} >Actualizar Cambios</button>
+                        </div>
+                    </div>
+                </div>
             </div>
     )
 

@@ -70,17 +70,13 @@ export const Login = () => {
             <h6>Ingresa tu email y password</h6>
             <form noValidate className="col-6" onSubmit={handleLogin}>
                 <div className="row mb-3">
-                    <label htmlFor="email" className="col-sm-2 col-form-label">Email</label>
-                    <div className="col-sm-10">
-                    <input type="email" className="form-control" id="email" />
-                    {validEmail ? <p>   </p> : <p>Email invalido, favor de verificar</p>}
-                    </div>
+                    <label htmlFor="email" className="form-label">Email</label>
+                        <input type="email" className="form-control" id="email" />
+                        {validEmail ? <p>   </p> : <p>Email invalido, favor de verificar</p>}
                 </div>
                 <div className="row mb-3">
-                    <label htmlFor="inputPassword" className="col-sm-2 col-form-label">Password</label>
-                    <div className="col-sm-10">
-                        <input type="password" className="form-control" id="inputPassword" />
-                    </div>
+                    <label htmlFor="inputPassword" className="form-label">Password</label>
+                    <input type="password" className="form-control" id="inputPassword" />
                 </div>
             
                 <button type="submit" className="btn btn-primary">Enviar</button>

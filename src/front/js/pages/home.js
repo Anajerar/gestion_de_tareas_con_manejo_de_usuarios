@@ -35,31 +35,14 @@ export const Home = () => {
 	}
 	
 	useEffect(()=>{
-		const fetchData = async(token) => {
-            const response = await fetch(`${backend}api/users/me`,{
-                headers : {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                  }            })
-			if (response.status != 200) {
-				localStorage.removeItem('token');
-				store.whereiam='Login';
-				navigate('/login')
-			} else {
-					store.whereiam='Tasklist';
-					navigate('/tasklist')}
-				}
 		store.whereiam='Home';
-		
 		if (!token) {
 					console.log('No token')
 					store.whereiam='Login';
 					navigate('/login')
 					}
-		//fetchData(token);
 		identify();
 		return
-
 	},[])
 
 	return (

@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Navigate,useNavigate } from "react-router-dom";
 import { Navbar } from "../component/navbar";
-import { AddTaskModal } from "./addTaskModal";
+//import { AddTaskModal } from "./addTaskModal";
 import { Context } from "../store/appContext";
 import { Link, useParams } from "react-router-dom";
 import '../../styles/index.css';
@@ -126,7 +126,7 @@ export const Tasklist = () => {
                                                     <span className="btn btn-primary btn-sm" href="#" role="button"><i className="fa-solid fa-pencil"></i></span>
                                                 </Link>
                                                 <button className="button btn-danger ms-1" data-bs-toggle="modal" data-bs-target="#deleteTask"
-                                                onClick={()=>{setDeleteTask({id:task.taskId,description:task.taskDescription})}}><i className="fa-solid fa-trash"></i></button></td>
+                                                onClick={()=>{setDeleteTask({id:task.taskId,description:task.taskTitle})}}><i className="fa-solid fa-trash"></i></button></td>
                                             </tr>)
                             })}
                         </tbody>
@@ -139,7 +139,7 @@ export const Tasklist = () => {
                         <button className="button page-button" onClick={nextPage}> Página Siguiente {' >>'}</button>}
                     </div>
                     <div type="button" className="btn btn-subtle mt-3" data-bs-toggle="modal" data-bs-target="#addTask">
-                        <Link to={"/addtaskmodal"}>
+                        <Link to={"/addtask"}>
                             <span className="btn page-button mt-3">+ Agregar una Tarea</span>
                         </Link>
                     </div>
@@ -152,7 +152,8 @@ export const Tasklist = () => {
                                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                             <div className="modal-body">
-                                <h1>Deseas eliminar la tarea: {deleteTask.description}</h1>
+                                <h2>¿Deseas eliminar la tarea?: </h2>
+                                <h3>{deleteTask.description}</h3>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Descartar</button>

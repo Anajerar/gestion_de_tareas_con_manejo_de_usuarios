@@ -11,7 +11,7 @@ export const Signup = () => {
     const [ validName, setValidName ] = useState(true)
     const [ validPassword, setValidPassword ] = useState(true)
     const [ validPswConf, setValidPswConf ] = useState(true)
-    const [ validUser, setValidUser ] = useState(true)
+    //const [ validUser, setValidUser ] = useState(true)
     const [ userLoginMsg, setUserLoginMsg ] = useState('')
     const navigate = useNavigate()
 
@@ -100,32 +100,24 @@ export const Signup = () => {
             <h1>Crea tu Cuenta</h1> 
             <form noValidate className="col-6" onSubmit={handleSignUp}>
                 <div className="row mb-3">
-                    <label htmlFor="userName" className="col-sm-2 col-form-label">Nombre de usuario</label>
-                    <div className="col-sm-10">
+                    <label htmlFor="userName" className="form-label">Nombre de usuario</label>
                     <input type="text" className="form-control" id="userName" />
-                    {validName ? <p>   </p> : <p className='fail'>Ingresa un nombre de usuario</p>}
-                    </div>
+                    {validName ? <p>   </p> : <p className='fail'>Ingresa un nombre de usuario</p>} 
                 </div>
                 <div className="row mb-3">
-                    <label htmlFor="email" className="col-sm-2 col-form-label">Email</label>
-                    <div className="col-sm-10">
+                    <label htmlFor="email" className="form-label">Email</label>
                     <input type="email" className="form-control" id="email"/>
                     {validEmail ? <p>   </p> : <p className='fail'>Formato de Email invalido, favor de verificar</p>}
-                    </div>
                 </div>
                 <div className="row mb-3">
-                    <label htmlFor="inputPassword" className="col-sm-2 col-form-label">Password</label>
-                    <div className="col-sm-10">
+                    <label htmlFor="inputPassword" className="form-label">Password</label>
                         <input type="password" className="form-control" id="inputPassword" />
                         {validPassword ? <p className="instruc"> Mayor de 6 caracteres incluyendo letras y numeros  </p> : <p className='fail'>Password debe ser mayor de 6 caracteres y contener letras y numeros</p>}
-                    </div>
                 </div>
                 <div className="row mb-3">
-                    <label htmlFor="confirmPassword" className="col-sm-2 col-form-label">Confirma tu Password</label>
-                    <div className="col-sm-10">
-                        <input type="password" className="form-control" id="confirmPassword" />
-                        {validPswConf ? <p>   </p> : <p className='fail'>Passwords no coinciden, intenta de nuevo</p>}
-                    </div>
+                    <label htmlFor="confirmPassword" className="form-label">Confirma tu Password</label>
+                    <input type="password" className="form-control" id="confirmPassword" />
+                    {validPswConf ? <p>   </p> : <p className='fail'>Passwords no coinciden, intenta de nuevo</p>}
                 </div>
                 <button type="submit" className="btn btn-primary">Enviar</button>
                 <p>{userLoginMsg}</p>

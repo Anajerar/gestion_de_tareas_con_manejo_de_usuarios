@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
 import { Navigate,useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 
@@ -22,9 +21,7 @@ export const Navbar = () => {
 					}
 				return response.json()
 				})
-		.then( userResponse =>{
-								console.log(userResponse)
-								setUserName(userResponse.name);
+		.then( userResponse =>{ setUserName(userResponse.name);
 								return
 
 			})
@@ -51,19 +48,11 @@ export const Navbar = () => {
 		if (store.whereiam=='Signup') {
 			setButtonRoute('/login');
 			setButtonFunction('Ingresar')
-		} 
-		
+		} 	
 	},[])
 
-	/*const handleLogout = () => {
-		localStorage.removeItem('token')
-		navigate('/login')
-	}
-	const handleSignin = () => {
-		navigate('/signup')
-	} */
 
-		const handleClick = () => {
+	const handleClick = () => {
 			if (buttonFunction=="Cerrar session"){
 				localStorage.removeItem('token');
 				navigate('/login')
@@ -84,7 +73,6 @@ export const Navbar = () => {
 
 			navigate(buttonRoute);
 			return
-			
 		}
 
 	return (
