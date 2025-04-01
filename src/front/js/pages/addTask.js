@@ -26,7 +26,7 @@ const descriptionChange = (e) =>{
 
 const addTask = () => {
     const completed = false;
-    console.log('task:',tittleToAdd,' description:',descriptionToAdd, ' completed:', completed)
+    //console.log('task:',tittleToAdd,' description:',descriptionToAdd, ' completed:', completed, " token:", token)
     const bodyData = JSON.stringify({'task':tittleToAdd,'description':descriptionToAdd, 'completed': completed})
     fetch(`${backend}api/users/addtask`,{method:'POST',
                                         headers : {"Content-Type": "application/json",

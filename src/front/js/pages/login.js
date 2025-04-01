@@ -13,6 +13,7 @@ export const Login = () => {
     const navigate = useNavigate()
 
     useEffect(()=>{
+        localStorage.removeItem('token')
         store.whereiam='Login';
     },[])
 
