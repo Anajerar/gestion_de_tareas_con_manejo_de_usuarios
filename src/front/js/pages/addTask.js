@@ -40,12 +40,10 @@ const addTask = () => {
                         return response.json()
                         })
     .then( userResponse =>{
-                            console.log(userResponse)
                             setShow(false)
                             store.currentPage='1'
                             navigate('/tasklist')
                             return
-
                         })
     .catch ( error => {console.log('An error occurred:catched:',error.message)})
     return
