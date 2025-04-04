@@ -44,7 +44,7 @@ class Task(db.Model):
     comments = db.Column(db.String(1000), unique=False, nullable=True)
 
     user = db.relationship("User", back_populates="tasks")
-
+    
     def __repr__(self):
         return f'<User {self.title}>'
     

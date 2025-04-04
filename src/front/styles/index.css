@@ -44,3 +44,10 @@ color:red;
     border-top: 1px solid rgb(63, 56, 56);
     border-bottom: 1px solid rgb(63, 56, 56);
 }
+
+.cell-limit {
+    max-width: 200px;
+    overflow: scroll;
+    text-overflow: ellipsis;
+    white-space: wrap;
+}

@@ -112,10 +112,10 @@ def tasks(page):     # Query task list for the user in pages of 5 tasks each
 
     print('offset:',offset)    
     # getting the 5 task list for the page
-    user_tasks = db.session.query(Task).filter(Task.user_id==user_id).order_by(desc(Task.id)).limit(5).offset(offset).all()
+    user_tasks = db.session.query(Task).filter(Task.user_id==user_id).order_by((Task.priority_id)).limit(5).offset(offset).all()
     task_list=[]
     for row in user_tasks:
-        task_list.append({'taskId':row.id,'taskTitle':row.title,'taskDescription':row.description,
+        task_list.append({'taskId':row.id,'taskTitle':row.title,'taskDescription':row.description, 'taskPriority':row.priority_id,
                           'taskCompleted':row.completed} ) 
     return jsonify ({'msg':'ok','userName':logged_user[0].user_name,'totalPages':pages,'userTasks':task_list})
 

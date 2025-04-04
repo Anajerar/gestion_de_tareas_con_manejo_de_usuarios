@@ -102,6 +102,7 @@ export const Tasklist = () => {
                             <tr>
                             <th className="ps-4" scope="col">Tarea</th>
                             <th className="ps-3" scope="col">Descripción</th>
+                            <th className="text-center" scope="col">Prioridad</th>
                             <th className="text-center" scope="col">Completado</th>
                             <th scope="col">Acción</th>
                             </tr>
@@ -110,8 +111,9 @@ export const Tasklist = () => {
                             {tasks.map((task,idx)=>{
                                     return (
                                             <tr className="task-list table-row" key={task.taskId}>
-                                            <td className="ps-4">{task.taskTitle}</td>
-                                            <td className="ps-3">{task.taskDescription}</td>
+                                            <td className="ps-4 cell-limit">{task.taskTitle}</td>
+                                            <td className="ps-3 cell-limit">{task.taskDescription}</td>
+                                            <td className="text-center">{task.taskPriority}</td>
                                             <td className="text-center">{task.taskCompleted? <i className="fa-solid fa-square-check"></i>:<i className="fa-regular fa-hourglass-half"></i>}</td>
                                             <td>
                                                 <Link to={"/modifytask/"+task.taskId}>

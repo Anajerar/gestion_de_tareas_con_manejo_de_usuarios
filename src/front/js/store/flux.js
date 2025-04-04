@@ -4,6 +4,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			whereiam:"Home",
 			currentPage:"1",
 			numberOfPages:0,
+			priorities:[{null:null}],
 			message: null,
 			demo: [
 				{
