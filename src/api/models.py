@@ -40,6 +40,8 @@ class Task(db.Model):
     description = db.Column(db.String(300), unique=False, nullable=False)
     completed = db.Column(db.Boolean, unique=False, nullable=False)
     user_id =  db.Column(db.Integer, ForeignKey(User.id), unique = False, nullable = False)
+    priority_id = db.Column(db.Integer, unique=False, nullable=True)
+    comments = db.Column(db.String(1000), unique=False, nullable=True)
 
     user = db.relationship("User", back_populates="tasks")
 
@@ -54,3 +56,10 @@ class Task(db.Model):
             "user_id": self.user_id,
             "completed": self.completed
         }
+    
+class Priority(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    priority_description = db.Column(db.String(15), unique=True, nullable=False)
+
+    def __repr__(self):
+        return f'<User {self.priority_description}>'
