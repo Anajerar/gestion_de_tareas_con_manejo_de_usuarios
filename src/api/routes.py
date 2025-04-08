@@ -184,11 +184,13 @@ def update_task(id):
         title=data.get('title')
         description=data.get('description')
         completed=data.get('completed')
+        notes=data.get('notes')
         print("task id:",id," user id:",user_id," title:",title," description:",description," completed:",completed)
         task_to_update = db.session.query(Task).filter_by(id=id,user_id=user_id).first()
         if task_to_update:
             task_to_update.title=title
             task_to_update.description=description
+            task_to_update.comments=notes
             task_to_update.completed=completed
             db.session.commit()
             db.session.close()

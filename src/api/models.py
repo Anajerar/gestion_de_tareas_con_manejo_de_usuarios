@@ -53,6 +53,7 @@ class Task(db.Model):
             "id": self.id,
             "title": self.title,
             "description":self.description,
+            "notes":self.comments,
             "user_id": self.user_id,
             "completed": self.completed
         }

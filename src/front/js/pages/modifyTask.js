@@ -56,6 +56,13 @@ export const ModifyTask = () => {
         return
     }
 
+    const notesChange = (e) =>{
+        console.log(e.target.value)
+        const notes=e.target.value
+        setTask(prevTask => ({...prevTask,notes:notes}))
+        return
+    }
+
     const checkCompletion = (e) =>{
             if (task.completed)
                 setTask(prevTask => ({...prevTask,completed:false}))
@@ -64,7 +71,8 @@ export const ModifyTask = () => {
 
     const updateTask = () => {
         const taskId=task.id
-        const bodyData = JSON.stringify({"id":task.id,"title":task.title,"description":task.description,"completed":task.completed})
+        const bodyData = JSON.stringify({"id":task.id,"title":task.title,"description":task.description,
+                                        "notes":task.notes, "completed":task.completed})
 
         fetch(`${backend}api/users/task/${taskId}`,{method:'PUT',
                                                     headers : {"Content-Type": "application/json",
@@ -102,6 +110,11 @@ export const ModifyTask = () => {
                             <textarea id="taskDescription" className="form-control" onChange={descriptionChange} defaultValue={task.description}/>
                             <div id="titleHelp" className="form-text">
                                     Descripcion: 300 caracteres
+                            </div>
+                            <label htmlFor="taskNotes" className="form-label">Notas</label>
+                            <textarea id="taskNotas" className="form-control" onChange={notesChange} defaultValue={task.notes}/>
+                            <div id="notesHelp" className="form-text">
+                                    Notas: 1000 caracteres
                             </div>
                             <div className="form-check">
                                 <input className="form-check-input" type="checkbox" value="" id="defaultCheck1" checked={task.completed}
