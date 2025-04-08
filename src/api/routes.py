@@ -4,7 +4,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_, desc
-from api.models import db, User, Task
+from api.models import db, User, Task, Priority
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -94,6 +94,7 @@ def tasks(page):     # Query task list for the user in pages of 5 tasks each
     logged_user = db.session.execute(db.select(User).filter_by(email=email)).one_or_none()
     user_id = logged_user[0].id
     print("user id:",user_id," user name:",logged_user[0].user_name)
+    db.session.close()
 
     # Calculating the total number of pages w/5 records each
     total_tasks = db.session.query(Task).filter(Task.user_id==user_id).count()
@@ -115,8 +116,11 @@ def tasks(page):     # Query task list for the user in pages of 5 tasks each
     user_tasks = db.session.query(Task).filter(Task.user_id==user_id).order_by((Task.priority_id)).limit(5).offset(offset).all()
     task_list=[]
     for row in user_tasks:
+        priority = db.session.query(Priority).filter(Priority.id==row.priority_id).first()
+        print("Descripcion de prioridad:",priority.priority_description)
         task_list.append({'taskId':row.id,'taskTitle':row.title,'taskDescription':row.description, 'taskPriority':row.priority_id,
-                          'taskCompleted':row.completed} ) 
+                          'priorityDescription':priority.priority_description,'taskCompleted':row.completed} ) 
+    db.session.close()
     return jsonify ({'msg':'ok','userName':logged_user[0].user_name,'totalPages':pages,'userTasks':task_list})
 
 
