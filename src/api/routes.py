@@ -160,6 +160,14 @@ def add_task():
     return {'msg':'task saved'}
 
 
+@api.route('/priorities', methods=['GET'])
+def get_priorities():
+    priorities = db.session.query(Priority).all()
+    priority_list=[]
+    for row in priorities:
+        priority_list.append({'id':row.id,'description':row.priority_description})
+    db.session.close()
+    return jsonify(priority_list),200
 
 @api.route('/users/task/<int:id>', methods=['GET','PUT', 'DELETE'])
 @jwt_required()
