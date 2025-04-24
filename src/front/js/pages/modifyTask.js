@@ -116,6 +116,17 @@ export const ModifyTask = () => {
                             <div id="notesHelp" className="form-text">
                                     Notas: 1000 caracteres
                             </div>
+
+                            <div class="input-group mb-3">
+                                <label class="input-group-text" for="inputGroupSelect01">Priority</label>
+                                    <select class="form-select" id="inputGroupSelect01">
+                                        <option selected>Choose...</option>
+                                        <option value="1">Top</option>
+                                        <option value="2">Medium</option>
+                                        <option value="3">High</option>
+                                    </select>
+                            </div>
+
                             <div className="form-check">
                                 <input className="form-check-input" type="checkbox" value="" id="defaultCheck1" checked={task.completed}
                                         onClick={checkCompletion}/>
