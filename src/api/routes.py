@@ -101,13 +101,13 @@ def tasks(page):     # Query task list for the user in pages of 5 tasks each
     pages=math.ceil(total_tasks/5)
 
     # calculating the page query offset
-    if page=="0":
+    if page=="1":
         offset=0
     elif page=="last":
         offset=(pages-1)*5
     else:
         try:
-            offset=(int(page)-1)*5
+            offset=(int(page)-1)*5+1
         except:
             return {'msg':'incorrect page number'},404
 
