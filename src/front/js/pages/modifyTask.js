@@ -15,6 +15,7 @@ export const ModifyTask = () => {
     const params = useParams();
     const navigate = useNavigate()
     const token = localStorage.getItem('token')
+    const [priorityList, setPriorityList] = useState([]);
 
     const fetchSingleTask = (token, taskId) =>{
         fetch(`${backend}api/users/task/${taskId}`,{method:'GET',
@@ -35,11 +36,31 @@ export const ModifyTask = () => {
             return
     }
 
+    const fetchPriorityList = () => {
+        console.log("fetching priority list");
+        fetch(`${backend}api/priorities`,{method:'GET',
+                                                    headers : {"Content-Type": "application/json"
+                                                    }})
+        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(response.statusText+":"+response.status);
+                                }
+                            return response.json()
+                            })
+        .then( userResponse =>{
+                                console.log("the priority list",userResponse);
+                                setPriorityList(userResponse);
+                                return
+                            })
+        .catch ( error => {console.log('Modify task: An error occurred:',error.message)})
+        return}
+
     useEffect(()=>{
         if (!token) { 
             navigate('/login')    
         }
         fetchSingleTask(token,params.taskid)
+        fetchPriorityList();
     },[])
 
     const titleChange = (e) =>{
@@ -121,9 +142,11 @@ export const ModifyTask = () => {
                                 <label class="input-group-text" for="inputGroupSelect01">Priority</label>
                                     <select class="form-select" id="inputGroupSelect01">
                                         <option selected>Choose...</option>
-                                        <option value="1">Top</option>
-                                        <option value="2">Medium</option>
-                                        <option value="3">High</option>
+                                        {priorityList.map((priority) => {
+                                            return (
+                                                <option key={priority.id} value={priority.id}>{priority.description}</option>
+                                            )
+                                        })}    
                                     </select>
                             </div>
 
