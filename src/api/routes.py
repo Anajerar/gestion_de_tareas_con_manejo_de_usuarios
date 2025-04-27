@@ -184,7 +184,10 @@ def update_task(id):
     if request.method=='GET':
         user_task = db.session.execute(db.select(Task).filter_by(user_id=user_id, id=id)).one_or_none()
         task=user_task[0].serialize()
-        print('this the user task:', task)
+        print('this the task priority:', task['priority_id'])
+        priority = db.session.query(Priority).filter(Priority.id==task['priority_id']).first()
+        task['priorityDescription']=priority.priority_description
+        print('this is the task:',task)
         return jsonify(task),200
     
     if request.method=='PUT':

@@ -29,6 +29,7 @@ export const ModifyTask = () => {
                             })
         .then( userResponse =>{
                                 setTask(userResponse);
+                                console.log("The Priotiry",userResponse);
                                 return
                             })
         .catch ( error => {console.log('Modify task: An error occurred:',error.message)})
@@ -59,8 +60,9 @@ export const ModifyTask = () => {
         if (!token) { 
             navigate('/login')    
         }
-        fetchSingleTask(token,params.taskid)
         fetchPriorityList();
+        fetchSingleTask(token,params.taskid)
+       
     },[])
 
     const titleChange = (e) =>{
@@ -141,7 +143,7 @@ export const ModifyTask = () => {
                             <div class="input-group mb-3">
                                 <label class="input-group-text" for="inputGroupSelect01">Priority</label>
                                     <select class="form-select" id="inputGroupSelect01">
-                                        <option selected>Choose...</option>
+                                        <option selected>{task.priorityDescription}</option>
                                         {priorityList.map((priority) => {
                                             return (
                                                 <option key={priority.id} value={priority.id}>{priority.description}</option>
