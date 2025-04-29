@@ -107,13 +107,13 @@ def tasks(page):     # Query task list for the user in pages of 5 tasks each
         offset=(pages-1)*5
     else:
         try:
-            offset=(int(page)-1)*5+1
+            offset=(int(page)-1)*5
         except:
             return {'msg':'incorrect page number'},404
 
     print('offset:',offset)    
     # getting the 5 task list for the page
-    user_tasks = db.session.query(Task).filter(Task.user_id==user_id).order_by((Task.priority_id)).limit(5).offset(offset).all()
+    user_tasks = db.session.query(Task).filter(Task.user_id==user_id).limit(5).offset(offset).all()
     task_list=[]
     for row in user_tasks:
         priority = db.session.query(Priority).filter(Priority.id==row.priority_id).first()
@@ -196,13 +196,15 @@ def update_task(id):
         description=data.get('description')
         completed=data.get('completed')
         notes=data.get('notes')
-        print("task id:",id," user id:",user_id," title:",title," description:",description," completed:",completed)
+        priority=data.get('priority')
+        print("task id:",id," user id:",user_id," title:",title," description:",description," completed:",completed," Priority:",priority)
         task_to_update = db.session.query(Task).filter_by(id=id,user_id=user_id).first()
         if task_to_update:
             task_to_update.title=title
             task_to_update.description=description
             task_to_update.comments=notes
             task_to_update.completed=completed
+            task_to_update.priority_id=priority
             db.session.commit()
             db.session.close()
             return {"msg":"task updated"},200

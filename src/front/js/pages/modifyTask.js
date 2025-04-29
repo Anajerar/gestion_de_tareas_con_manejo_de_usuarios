@@ -92,11 +92,18 @@ export const ModifyTask = () => {
             else setTask(prevTask => ({...prevTask,completed:true}))
     }
 
+    const priorityChange = (e) =>{
+        console.log(e.target.value)
+        const priority=e.target.value
+        setTask(prevTask => ({...prevTask,priority_id:priority}))
+        return
+    }
+
     const updateTask = () => {
         const taskId=task.id
         const bodyData = JSON.stringify({"id":task.id,"title":task.title,"description":task.description,
-                                        "notes":task.notes, "completed":task.completed})
-
+                                        "notes":task.notes, "completed":task.completed, "priority":task.priority_id})
+        console.log("The body data",bodyData)
         fetch(`${backend}api/users/task/${taskId}`,{method:'PUT',
                                                     headers : {"Content-Type": "application/json",
                                                     Authorization: `Bearer ${token}`}, 
@@ -142,7 +149,7 @@ export const ModifyTask = () => {
 
                             <div class="input-group mb-3">
                                 <label class="input-group-text" for="inputGroupSelect01">Priority</label>
-                                    <select class="form-select" id="inputGroupSelect01">
+                                    <select class="form-select" id="inputGroupSelect01" onChange={priorityChange} defaultValue={task.priority_id}>
                                         <option selected>{task.priorityDescription}</option>
                                         {priorityList.map((priority) => {
                                             return (
