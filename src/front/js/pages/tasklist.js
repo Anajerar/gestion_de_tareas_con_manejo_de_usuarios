@@ -88,6 +88,23 @@ export const Tasklist = () => {
 
         return
     }
+
+    const prioritySort = (e) => {
+        console.log('got in the priority sort')
+        //const priority=e.target.value
+        setTasks(prevTasks => {
+            return prevTasks.sort((a,b) => {
+                if (a.taskPriority < b.taskPriority) { 
+                    console.log('a<b');
+                    return -1};
+                if (a.taskPriority > b.taskPriority) {
+                    console.log('a>b');
+                    return 1};
+                return 0;
+            })
+        })
+        return
+    }
     
     return (
         <div>
@@ -102,9 +119,13 @@ export const Tasklist = () => {
                             <tr>
                             <th className="ps-4" scope="col">Tarea</th>
                             <th className="ps-3" scope="col">Descripción</th>
-                            <th className="text-center" scope="col" style={{display:'none'}}>Prioridad</th>
-                            <th className="text-center" scope="col">Prioridad</th>
-                            <th className="text-center" scope="col">Completado</th>
+                            <th className="text-center" scope="col" style={{display:'none'}}>PriorityId</th>
+                            <th className="text-center dropdown" scope="col">
+                                <a class="" role="button" aria-expanded="false" onClick={prioritySort}>Prioridad</a>
+                            </th>
+                            <th className="text-center" scope="col">
+                                <a class="" role="button" aria-expanded="false">Completado</a>
+                            </th>
                             <th scope="col">Acción</th>
                             </tr>
                         </thead>
